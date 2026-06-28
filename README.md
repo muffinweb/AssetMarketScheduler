@@ -12,7 +12,7 @@ RESEND_API_KEY=YOUR_RESEND_API_KEY_HERE
 SELF_JOURNAL_EMAIL_ADRESS=YOUR_RESEND_REGISTERED_EMAIL_HERE
 ```
 
-### Installation CI/CD Sample
+### Installation CI Sample
 ```yaml
 name: Daily Scheduler
 
