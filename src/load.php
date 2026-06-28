@@ -1,42 +1,50 @@
 <?php
 
 /**
- * ENV Registrar
+ * Reading env on cloud/ci or local requires different concepts
  */
-function loadEnv($filePath): bool
-{
-    if (!file_exists($filePath)) {
-        return false;
-    }
 
-    // Dosyayı satır satır oku
-    $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+$localMode = false;
 
-    foreach ($lines as $line) {
-        // Yorum satırlarını ( # ile başlayan ) atla
-        if (strpos(trim($line), '#') === 0) {
-            continue;
+if($localMode === true){
+    /**
+     * ENV Registrar
+     */
+    function loadEnv($filePath): bool
+    {
+        if (!file_exists($filePath)) {
+            return false;
         }
 
-        // Anahtar ve değeri ayır (Örn: API_KEY="şifre")
-        list($name, $value) = explode('=', $line, 2);
+        // Dosyayı satır satır oku
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        $name = trim($name);
-        $value = trim($value);
+        foreach ($lines as $line) {
+            // Yorum satırlarını ( # ile başlayan ) atla
+            if (strpos(trim($line), '#') === 0) {
+                continue;
+            }
 
-        // Değerin başındaki ve sonundaki tırnak işaretlerini temizle
-        $value = trim($value, '"\'');
+            // Anahtar ve değeri ayır (Örn: API_KEY="şifre")
+            list($name, $value) = explode('=', $line, 2);
 
-        // Sistem çevre değişkenlerine, $_ENV ve $_SERVER dizilerine kaydet
-        putenv(sprintf('%s=%s', $name, $value));
-        $_ENV[$name] = $value;
-        $_SERVER[$name] = $value;
+            $name = trim($name);
+            $value = trim($value);
+
+            // Değerin başındaki ve sonundaki tırnak işaretlerini temizle
+            $value = trim($value, '"\'');
+
+            // Sistem çevre değişkenlerine, $_ENV ve $_SERVER dizilerine kaydet
+            putenv(sprintf('%s=%s', $name, $value));
+            $_ENV[$name] = $value;
+            $_SERVER[$name] = $value;
+        }
+
+        return true;
     }
 
-    return true;
+    loadEnv(__DIR__ . '/../.env');
 }
-
-loadEnv(__DIR__ . '/../.env');
 
 /**
  * Autoloader
