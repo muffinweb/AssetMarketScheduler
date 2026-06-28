@@ -70,6 +70,8 @@ class EmailStage implements StageInterface
 
             echo "📊 HTTP Durum Kodu: " . $httpCode . "\n";
             echo "📩 Sunucu Yanıtı: {$responseMessage} \n";
+            echo "Current Resend Api Key: " . $apiKey . " \n";
+            echo "Current SelfJournal Email: " . getenv('SELF_JOURNAL_EMAIL_ADRESS');
 
             if ($httpCode === 200 || $httpCode === 201) {
                 echo "✅ E-posta gönderimi başarıyla sıraya alındı!\n";
