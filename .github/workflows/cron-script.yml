@@ -18,16 +18,6 @@ jobs:
           php-version: '8.4'
           extensions: mbstring, xml, ctype, iconv
 
-      - name: Test Secret
-        env:
-          TEST_VAR: ${{ secrets.RESEND_API_KEY }}
-        run: |
-          if [ -z "$TEST_VAR" ]; then
-            echo "❌ GitHub Secret kesinlikle BOS geliyor, ayarlardan adı kontrol et!"
-          else
-            echo "✅ GitHub Secret basariyla yuklendi (Icerigi guvenlik nedeniyle gorunmez)."
-          fi
-
       - name: Run PHP Script
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

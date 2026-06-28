@@ -2,7 +2,7 @@
 
 ℹ️ It researches the buying and selling prices of physical assets such as fiat currencies and precious metals, extracts the information, creates a clean table, and sends informational messages via SMS and email.
 
-⚡️ Lite, package or framework independent, easy installation of personalized sms, email information via CI/CD
+⚡️ Lite, package or framework independent, easy installation of personalized sms, email information via CI
 
 #### Env File Sample
 ```php
@@ -18,31 +18,28 @@ name: Daily Scheduler
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 10 * * *'
   workflow_dispatch:
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.4'
           extensions: mbstring, xml, ctype, iconv
-
-      - name: Install Composer Dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Run PHP Script
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           SELF_JOURNAL_EMAIL_ADRESS: ${{ secrets.SELF_JOURNAL_EMAIL_ADRESS }}
         run: php bootstrap.php
+
 ```
 
 ### 📫 E-Mail Template
